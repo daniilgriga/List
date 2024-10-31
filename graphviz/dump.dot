@@ -1,16 +1,16 @@
 digraph
 {
 rankdir = "LR";
-node000 [shape=Mrecord; label = "  000 | data =   0 | next =   0 | prev =   0  "];
-node001 [shape=Mrecord; label = "  001 | data =  10 | next =   2 | prev =   0  "];
-node002 [shape=Mrecord; label = "  002 | data =  20 | next =   6 | prev =   1  "];
-node003 [shape=Mrecord; label = "  003 | data =  30 | next =   4 | prev =   6  "];
-node004 [shape=Mrecord; label = "  004 | data =  40 | next =   5 | prev =   3  "];
-node005 [shape=Mrecord; label = "  005 | data =  50 | next =   0 | prev =   4  "];
-node006 [shape=Mrecord; label = "  006 | data =  25 | next =   3 | prev =   2  "];
-node007 [shape=Mrecord; label = "  007 | data = 666 | next =  -1 | prev =  -1  "];
-node008 [shape=Mrecord; label = "  008 | data = 666 | next =  -1 | prev =  -1  "];
-node009 [shape=Mrecord; label = "  009 | data = 666 | next =  -1 | prev =  -1  "];
+node000 [shape=Mrecord; label = "  000 | data =   0 | next =   1 | prev =   4  "];
+node001 [shape=Mrecord; label = "  001 | data =  10 | next =   4 | prev =   0  "];
+node002 [shape=Mrecord; label = "  002 | data = 666 | next =   5 | prev =  -1  "];
+node003 [shape=Mrecord; label = "  003 | data = 666 | next =   0 | prev =  -1  "];
+node004 [shape=Mrecord; label = "  004 | data =  25 | next =   0 | prev =   1  "];
+node005 [shape=Mrecord; label = "  005 | data = 666 | next =   6 | prev =  -1  "];
+node006 [shape=Mrecord; label = "  006 | data = 666 | next =   7 | prev =  -1  "];
+node007 [shape=Mrecord; label = "  007 | data = 666 | next =   8 | prev =  -1  "];
+node008 [shape=Mrecord; label = "  008 | data = 666 | next =   9 | prev =  -1  "];
+node009 [shape=Mrecord; label = "  009 | data = 666 | next =   0 | prev =  -1  "];
 
 node000 -> node001 [ weight=1000; color=white; ];
 node001 -> node002 [ weight=1000; color=white; ];
@@ -24,17 +24,18 @@ node008 -> node009 [ weight=1000; color=white; ];
 
 node000 -> node000 [ label = "lol"];
 
-node001 -> node002 [ color=red; ]
-node002 -> node006 [ color=red; ]
-node003 -> node004 [ color=red; ]
-node004 -> node005 [ color=red; ]
-node005 -> node000 [ color=red; ]
-node006 -> node003 [ color=red; ]
+node001 -> node004 [ color=red; ]
+node004 -> node000 [ color=red; ]
 
 node001 -> node000 [ color=blue; ]
-node002 -> node001 [ color=blue; ]
-node003 -> node006 [ color=blue; ]
-node004 -> node003 [ color=blue; ]
-node005 -> node004 [ color=blue; ]
-node006 -> node002 [ color=blue; ]
+node004 -> node001 [ color=blue; ]
+
+node002 -> node005 [ color=green; ]
+node003 -> node000 [ color=green; ]
+
+node005 -> node006 [ color=green; ]
+node006 -> node007 [ color=green; ]
+node007 -> node008 [ color=green; ]
+node008 -> node009 [ color=green; ]
+node009 -> node000 [ color=green; ]
 }
