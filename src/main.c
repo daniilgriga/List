@@ -37,6 +37,8 @@ int graph_dump (struct list_t* list);
 
 int delete (struct list_t* list, const int position);
 
+int insert_first_elem (struct list_t* list, const elem_t elem);
+
 int main (void)
 {
     struct list_t list = {};
@@ -44,19 +46,38 @@ int main (void)
     if ( list_ctor (&list) == 1 )
         return 1;
 
-    insert_after (&list, 0, 10);
+    insert_first_elem (&list, 10);
     insert_after (&list, 1, 20);
     insert_after (&list, 2, 30);
     insert_after (&list, 2, 25);
 
     delete (&list, 2);
     delete (&list, 3);
+    //delete (&list, 4);
+    //delete (&list, 1);
+
+    //insert_after (&list, 1, 111);
+    //insert_after (&list, 2, 211);
+    //insert_after (&list, 3, 311);
+    //insert_after (&list, 4, 411);
+    //insert_after (&list, 5, 511);
+    //insert_after (&list, 6, 611);
 
     list_log_file (&list);
 
     graph_dump (&list);
 
     list_dtor (&list);
+
+    return 0;
+}
+
+int insert_first_elem (struct list_t* list, const elem_t elem)
+{
+    insert_after (list, 0, elem);
+
+    list->head    = 1;
+    list->next[0] = list->head;
 
     return 0;
 }
@@ -74,47 +95,38 @@ int graph_dump (struct list_t* list)
 
     fprintf (graph_file, "digraph\n{\n");
     fprintf (graph_file, "rankdir = \"LR\";\n");
+
     for (int i = 0; i < SIZE; i++)
         fprintf (graph_file, "node00%d [shape=Mrecord; label = \"  00%d | data = %3d | next = %3d | prev = %3d  \"];\n",
                  i, i, list->data[i], list->next[i], list->prev[i]);
     fprintf (graph_file, "\n");
+
     for (int i = 0; i < SIZE - 1; i++)
         fprintf (graph_file, "node00%d -> node00%d [ weight=1000; color=white; ];\n",
                  i, i + 1);
 
-    fprintf (graph_file, "\nnode000 -> node000 [ label = \"lol\"];\n\n");
-
-    for (int i = 1; i <= list->head; i++)
+    for (int i = 0; i < SIZE; i++)
     {
-        if ( list->prev[i] != -1 )
-            fprintf (graph_file, "node00%d -> node00%d [ color=red; ]\n",
-                     i, list->next[i]);
-    }
-    fprintf (graph_file, "\n");
-
-    for (int i = 1; i <= list->head; i++)
-    {
-        if ( list->prev[i] != -1 )
-            fprintf (graph_file, "node00%d -> node00%d [ color=blue; ]\n",
-                     i, list->prev[i]);
-    }
-    fprintf (graph_file, "\n");
-
-    for (int i = 1; i <= list->head; i++)
-    {
-        if ( list->prev[i] == -1 )
+        if (list->prev[i] == -1)
+        {
             fprintf (graph_file, "node00%d -> node00%d [ color=green; ]\n",
                      i, list->next[i]);
+
+            fprintf (graph_file, "\n");
+        }
+        else
+        {
+            fprintf (graph_file, "node00%d -> node00%d [ color=red; ]\n",
+                     i, list->next[i]);
+
+            fprintf (graph_file, "\n");
+
+            fprintf (graph_file, "node00%d -> node00%d [ color=blue; ]\n",
+                     i, list->prev[i]);
+        }
+
     }
 
-    fprintf (graph_file, "\n");
-
-    int head = list->head + 1;
-    for (head; head < SIZE; head++)
-    {
-        fprintf (graph_file, "node00%d -> node00%d [ color=green; ]\n",
-                 head, list->next[head]);
-    }
     fprintf (graph_file, "}");
     fprintf (graph_file, "\n");
 
@@ -131,7 +143,12 @@ int insert_after (struct list_t* list, const int position, const elem_t elem)
 
     list->free_elem = list->next[new_elem_position];
 
-    list->head = new_elem_position;
+    if (list->tail == position)
+    {
+        list->prev[0] = new_elem_position;
+        list->tail    = new_elem_position;
+    }
+
 
     int old_next = list->next[position];
 
@@ -139,11 +156,12 @@ int insert_after (struct list_t* list, const int position, const elem_t elem)
 
     list->prev[new_elem_position] = position;
 
-    list->prev[list->next[position]] = new_elem_position;
-
     list->next[new_elem_position] = old_next;
 
     list->next[position] = new_elem_position;
+
+    list->prev[old_next] = new_elem_position;
+
 
     return 0;
 }
@@ -154,6 +172,36 @@ int delete (struct list_t* list, const int position)
 
     list->data[position] = POISON_PLACE;
 
+    int old_next = list->next[position];
+    int old_prev = list->prev[position];
+
+    list->next[position] = list->free_elem;
+    list->free_elem = position;
+
+    if (list->prev[0] == position)
+    {
+        list->prev[0] = list->prev[position];
+        list->tail    = list->prev[0];
+    }
+    else
+    {
+        list->prev[old_next] = old_prev;
+    }
+
+    if (list->prev[0] == position)
+    {
+        list->next[0] = list->next[position];
+        list->head    = list->next[0];
+
+        printf ("%d \n", list->next[position]);
+    }
+    else
+    {
+        list->next[old_prev] = old_next;
+    }
+
+    list->prev[position] = FREE_PLACE;
+    /*
     list->prev[list->next[position]] = list->prev[position];
 
     list->next[list->prev[position]] = list->next[position];
@@ -167,7 +215,7 @@ int delete (struct list_t* list, const int position)
     list->free_elem = position;
 
     list->next[position] = old_free;
-
+    */
     return 0;
 }
 
@@ -182,8 +230,8 @@ int list_ctor (struct list_t* list)
         return 1;
     }
 
-    list->head = 1;
-    list->tail = 1;
+    list->head = 0;
+    list->tail = 0;
 
     list->free_elem = 1;
 
@@ -279,19 +327,18 @@ int list_log_file (struct list_t* list)
     fprintf (log_file, "\n\n\n\ndata: 000  001  002  003  004  005  006  007  008  009  010  011  012  013  014  015\n      ");
     for (int i = 0; i < SIZE; i++)
         fprintf(log_file, "%3d  ", list->data[i]);
-    fprintf (log_file, "\n  %*s^ tail = %03d\n", (list->tail + 1) * 5, "", list->tail);
-    fprintf (log_file, "\n  %*s^ head = %03d\n", (list->head + 1) * 5, "", list->head);
     fprintf (log_file, "\n  %*s^ free = %03d\n", (list->free_elem + 1) * 5, "", list->free_elem);
 
     fprintf (log_file, "\n\n\n\nnext: 000  001  002  003  004  005  006  007  008  009  010  011  012  013  014  015\n      ");
 
     for (int i = 0; i < SIZE; i++)
         fprintf (log_file, "%3d  ", list->next[i]);
+    fprintf (log_file, "\n  %*s^ head = %03d\n", (list->head + 1) * 5, "", list->head);
 
     fprintf (log_file, "\n\n\n\nprev: 000  001  002  003  004  005  006  007  008  009  010  011  012  013  014  015\n      ");
-
     for (int i = 0; i < SIZE; i++)
         fprintf (log_file, "%3d  ", list->prev[i]);
+    fprintf (log_file, "\n  %*s^ tail = %03d\n", (list->tail + 1) * 5, "", list->tail);
 
     fprintf (log_file, "\n\n<img src=\"dump.png\">");
 

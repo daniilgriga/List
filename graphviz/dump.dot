@@ -4,7 +4,7 @@ rankdir = "LR";
 node000 [shape=Mrecord; label = "  000 | data =   0 | next =   1 | prev =   4  "];
 node001 [shape=Mrecord; label = "  001 | data =  10 | next =   4 | prev =   0  "];
 node002 [shape=Mrecord; label = "  002 | data = 666 | next =   5 | prev =  -1  "];
-node003 [shape=Mrecord; label = "  003 | data = 666 | next =   0 | prev =  -1  "];
+node003 [shape=Mrecord; label = "  003 | data = 666 | next =   2 | prev =  -1  "];
 node004 [shape=Mrecord; label = "  004 | data =  25 | next =   0 | prev =   1  "];
 node005 [shape=Mrecord; label = "  005 | data = 666 | next =   6 | prev =  -1  "];
 node006 [shape=Mrecord; label = "  006 | data = 666 | next =   7 | prev =  -1  "];
@@ -21,21 +21,27 @@ node005 -> node006 [ weight=1000; color=white; ];
 node006 -> node007 [ weight=1000; color=white; ];
 node007 -> node008 [ weight=1000; color=white; ];
 node008 -> node009 [ weight=1000; color=white; ];
+node000 -> node001 [ color=red; ]
 
-node000 -> node000 [ label = "lol"];
-
+node000 -> node004 [ color=blue; ]
 node001 -> node004 [ color=red; ]
-node004 -> node000 [ color=red; ]
 
 node001 -> node000 [ color=blue; ]
-node004 -> node001 [ color=blue; ]
-
 node002 -> node005 [ color=green; ]
-node003 -> node000 [ color=green; ]
 
+node003 -> node002 [ color=green; ]
+
+node004 -> node000 [ color=red; ]
+
+node004 -> node001 [ color=blue; ]
 node005 -> node006 [ color=green; ]
+
 node006 -> node007 [ color=green; ]
+
 node007 -> node008 [ color=green; ]
+
 node008 -> node009 [ color=green; ]
+
 node009 -> node000 [ color=green; ]
+
 }
