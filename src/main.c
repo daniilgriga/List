@@ -33,14 +33,21 @@ int load_elements_fr_dbg (struct list_t* list);
 
 int insert_after (struct list_t* list, const int position, const elem_t elem);
 
-int graph_dump (struct list_t* list);
+const char* graph_dump (struct list_t* list);
 
 int delete (struct list_t* list, const int position);
 
 int insert_first_elem (struct list_t* list, const elem_t elem);
 
+FILE* open_log_file (const char* filename);
+
+
+FILE* LOG_FILE = NULL;
+
 int main (void)
 {
+    LOG_FILE = open_log_file ("../graphviz/log_dump.html");
+
     struct list_t list = {};
 
     if ( list_ctor (&list) == 1 )
@@ -53,24 +60,44 @@ int main (void)
 
     delete (&list, 2);
     delete (&list, 3);
-    //delete (&list, 4);
+    delete (&list, 4);
     //delete (&list, 1);
-
-    //insert_after (&list, 1, 111);
-    //insert_after (&list, 2, 211);
-    //insert_after (&list, 3, 311);
-    //insert_after (&list, 4, 411);
-    //insert_after (&list, 5, 511);
-    //insert_after (&list, 6, 611);
 
     list_log_file (&list);
 
-    graph_dump (&list);
+    insert_after (&list, 1, 111);
+
+    list_log_file (&list);
+
+    insert_after (&list, 4, 211);
+    insert_after (&list, 3, 311);
+    //insert_after (&list, 4, 411);
+    //insert_after (&list, 2, 511);
+    //insert_after (&list, 6, 611);
+
+    //graph_dump (&list);
+
+    list_log_file (&list);
 
     list_dtor (&list);
 
+    fclose (LOG_FILE);
+
     return 0;
 }
+
+FILE* open_log_file (const char* filename)
+{
+    FILE* log_file = fopen (filename, "w");
+    if (log_file == NULL)
+    {
+        printf(RED_TEXT("ERROR open log_dump file\n"));
+        return NULL;
+    }
+
+    return log_file;
+}
+
 
 int insert_first_elem (struct list_t* list, const elem_t elem)
 {
@@ -82,7 +109,7 @@ int insert_first_elem (struct list_t* list, const elem_t elem)
     return 0;
 }
 
-int graph_dump (struct list_t* list)
+const char* graph_dump (struct list_t* list)
 {
     assert (list);
 
@@ -90,7 +117,7 @@ int graph_dump (struct list_t* list)
     if (graph_file == NULL)
     {
         printf(RED_TEXT("ERROR open graph_file\n"));
-        return 1;
+        return NULL;
     }
 
     fprintf (graph_file, "digraph\n{\n");
@@ -130,9 +157,18 @@ int graph_dump (struct list_t* list)
     fprintf (graph_file, "}");
     fprintf (graph_file, "\n");
 
-    fclose (graph_file);
+    fclose  (graph_file);
 
-    return 0;
+    static int dump_number = 1;
+    static char filename[50] = {};
+    char    command_name[100] = {};
+
+    sprintf (filename, "../graphviz/dump%d.png", dump_number++);
+    sprintf (command_name, "dot ../graphviz/dump.dot -Tpng -o %s", filename);
+
+    system  (command_name);
+
+    return filename;
 }
 
 int insert_after (struct list_t* list, const int position, const elem_t elem)
@@ -316,36 +352,29 @@ int list_log_file (struct list_t* list)
 {
     assert (list);
 
-    FILE* log_file = fopen ("../graphviz/data.html", "w");
-    if (log_file == NULL)
-    {
-        printf(RED_TEXT("ERROR open file\n"));
-        return 1;
-    }
-
-    fprintf (log_file, "<pre>\n");
-    fprintf (log_file, "\n\n\n\ndata: 000  001  002  003  004  005  006  007  008  009  010  011  012  013  014  015\n      ");
+    fprintf (LOG_FILE, "<pre>\n");
+    fprintf (LOG_FILE, "\n\n\n\ndata: 000  001  002  003  004  005  006  007  008  009  010  011  012  013  014  015\n      ");
     for (int i = 0; i < SIZE; i++)
-        fprintf(log_file, "%3d  ", list->data[i]);
-    fprintf (log_file, "\n  %*s^ free = %03d\n", (list->free_elem + 1) * 5, "", list->free_elem);
+        fprintf(LOG_FILE, "%3d  ", list->data[i]);
+    fprintf (LOG_FILE, "\n  %*s^ free = %03d\n", (list->free_elem + 1) * 5, "", list->free_elem);
 
-    fprintf (log_file, "\n\n\n\nnext: 000  001  002  003  004  005  006  007  008  009  010  011  012  013  014  015\n      ");
+    fprintf (LOG_FILE, "\n\n\n\nnext: 000  001  002  003  004  005  006  007  008  009  010  011  012  013  014  015\n      ");
 
     for (int i = 0; i < SIZE; i++)
-        fprintf (log_file, "%3d  ", list->next[i]);
-    fprintf (log_file, "\n  %*s^ head = %03d\n", (list->head + 1) * 5, "", list->head);
+        fprintf (LOG_FILE, "%3d  ", list->next[i]);
+    fprintf (LOG_FILE, "\n  %*s^ head = %03d\n", (list->head + 1) * 5, "", list->head);
 
-    fprintf (log_file, "\n\n\n\nprev: 000  001  002  003  004  005  006  007  008  009  010  011  012  013  014  015\n      ");
+    fprintf (LOG_FILE, "\n\n\n\nprev: 000  001  002  003  004  005  006  007  008  009  010  011  012  013  014  015\n      ");
     for (int i = 0; i < SIZE; i++)
-        fprintf (log_file, "%3d  ", list->prev[i]);
-    fprintf (log_file, "\n  %*s^ tail = %03d\n", (list->tail + 1) * 5, "", list->tail);
+        fprintf (LOG_FILE, "%3d  ", list->prev[i]);
+    fprintf (LOG_FILE, "\n  %*s^ tail = %03d\n", (list->tail + 1) * 5, "", list->tail);
 
-    fprintf (log_file, "\n\n<img src=\"dump.png\">");
+    const char* filename = graph_dump (list);
 
-    //fflush  (log_file);
+    fprintf (LOG_FILE, "\n\n<img src=\"%s\">", filename);
+
+    fflush  (LOG_FILE);
     //getchar ();
-
-    fclose (log_file);
 
     return 0;
 }
