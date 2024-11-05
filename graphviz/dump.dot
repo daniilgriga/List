@@ -1,16 +1,26 @@
 digraph
 {
 rankdir = "LR";
-node000 [shape=Mrecord; label = "  000 | data =   0 | next =   1 | prev =   2  "];
-node001 [shape=Mrecord; label = "  001 | data =  10 | next =   4 | prev =   0  "];
-node002 [shape=Mrecord; label = "  002 | data = 311 | next =   0 | prev =   3  "];
-node003 [shape=Mrecord; label = "  003 | data = 211 | next =   2 | prev =   4  "];
-node004 [shape=Mrecord; label = "  004 | data = 111 | next =   3 | prev =   1  "];
-node005 [shape=Mrecord; label = "  005 | data = 666 | next =   6 | prev =  -1  "];
-node006 [shape=Mrecord; label = "  006 | data = 666 | next =   7 | prev =  -1  "];
-node007 [shape=Mrecord; label = "  007 | data = 666 | next =   8 | prev =  -1  "];
-node008 [shape=Mrecord; label = "  008 | data = 666 | next =   9 | prev =  -1  "];
-node009 [shape=Mrecord; label = "  009 | data = 666 | next =   0 | prev =  -1  "];
+node000 [shape=Mrecord; label = "  000 | data =   0 | next =   1 | prev =   3  "];
+node001 [shape=Mrecord; label = "  001 | data =  10 | next =   5 | prev =   0  "];
+node002 [shape=Mrecord; label = "  002 | data =  20 | next =   9 | prev =   5  "];
+node003 [shape=Mrecord; label = "  003 | data =  30 | next =   0 | prev =  10  "];
+node004 [shape=Mrecord; label = "  004 | data =  25 | next =   8 | prev =   9  "];
+node005 [shape=Mrecord; label = "  005 | data = 111 | next =   2 | prev =   1  "];
+node006 [shape=Mrecord; label = "  006 | data = 211 | next =  10 | prev =   8  "];
+node007 [shape=Mrecord; label = "  007 | data = 666 | next =  12 | prev =  -1  "];
+node008 [shape=Mrecord; label = "  008 | data = 411 | next =   6 | prev =   4  "];
+node009 [shape=Mrecord; label = "  009 | data = 511 | next =   4 | prev =   2  "];
+node010 [shape=Mrecord; label = "  010 | data = 611 | next =   3 | prev =   6  "];
+node011 [shape=Mrecord; label = "  011 | data = 666 | next =   7 | prev =  -1  "];
+node012 [shape=Mrecord; label = "  012 | data = 666 | next =  13 | prev =  -1  "];
+node013 [shape=Mrecord; label = "  013 | data = 666 | next =  14 | prev =  -1  "];
+node014 [shape=Mrecord; label = "  014 | data = 666 | next =  15 | prev =  -1  "];
+node015 [shape=Mrecord; label = "  015 | data = 666 | next =  16 | prev =  -1  "];
+node016 [shape=Mrecord; label = "  016 | data = 666 | next =  17 | prev =  -1  "];
+node017 [shape=Mrecord; label = "  017 | data = 666 | next =  18 | prev =  -1  "];
+node018 [shape=Mrecord; label = "  018 | data = 666 | next =  19 | prev =  -1  "];
+node019 [shape=Mrecord; label = "  019 | data = 666 | next =   0 | prev =  -1  "];
 
 node000 -> node001 [ weight=1000; color=white; ];
 node001 -> node002 [ weight=1000; color=white; ];
@@ -21,29 +31,64 @@ node005 -> node006 [ weight=1000; color=white; ];
 node006 -> node007 [ weight=1000; color=white; ];
 node007 -> node008 [ weight=1000; color=white; ];
 node008 -> node009 [ weight=1000; color=white; ];
-node000 -> node001 [ color=red; ]
+node009 -> node010 [ weight=1000; color=white; ];
+node010 -> node011 [ weight=1000; color=white; ];
+node011 -> node012 [ weight=1000; color=white; ];
+node012 -> node013 [ weight=1000; color=white; ];
+node013 -> node014 [ weight=1000; color=white; ];
+node014 -> node015 [ weight=1000; color=white; ];
+node015 -> node016 [ weight=1000; color=white; ];
+node016 -> node017 [ weight=1000; color=white; ];
+node017 -> node018 [ weight=1000; color=white; ];
+node018 -> node019 [ weight=1000; color=white; ];
+node000 -> node001 [ color="#0000FF"; ]
 
-node000 -> node002 [ color=blue; ]
-node001 -> node004 [ color=red; ]
+node000 -> node003 [ color="#00FFFF"; ]
+node001 -> node005 [ color="#0000FF"; ]
 
-node001 -> node000 [ color=blue; ]
-node002 -> node000 [ color=red; ]
+node001 -> node000 [ color="#00FFFF"; ]
+node002 -> node009 [ color="#0000FF"; ]
 
-node002 -> node003 [ color=blue; ]
-node003 -> node002 [ color=red; ]
+node002 -> node005 [ color="#00FFFF"; ]
+node003 -> node000 [ color="#0000FF"; ]
 
-node003 -> node004 [ color=blue; ]
-node004 -> node003 [ color=red; ]
+node003 -> node010 [ color="#00FFFF"; ]
+node004 -> node008 [ color="#0000FF"; ]
 
-node004 -> node001 [ color=blue; ]
-node005 -> node006 [ color=green; ]
+node004 -> node009 [ color="#00FFFF"; ]
+node005 -> node002 [ color="#0000FF"; ]
 
-node006 -> node007 [ color=green; ]
+node005 -> node001 [ color="#00FFFF"; ]
+node006 -> node010 [ color="#0000FF"; ]
 
-node007 -> node008 [ color=green; ]
+node006 -> node008 [ color="#00FFFF"; ]
+node007 -> node012 [ color="#00FF00"; ]
 
-node008 -> node009 [ color=green; ]
+node008 -> node006 [ color="#0000FF"; ]
 
-node009 -> node000 [ color=green; ]
+node008 -> node004 [ color="#00FFFF"; ]
+node009 -> node004 [ color="#0000FF"; ]
+
+node009 -> node002 [ color="#00FFFF"; ]
+node010 -> node003 [ color="#0000FF"; ]
+
+node010 -> node006 [ color="#00FFFF"; ]
+node011 -> node007 [ color="#00FF00"; ]
+
+node012 -> node013 [ color="#00FF00"; ]
+
+node013 -> node014 [ color="#00FF00"; ]
+
+node014 -> node015 [ color="#00FF00"; ]
+
+node015 -> node016 [ color="#00FF00"; ]
+
+node016 -> node017 [ color="#00FF00"; ]
+
+node017 -> node018 [ color="#00FF00"; ]
+
+node018 -> node019 [ color="#00FF00"; ]
+
+node019 -> node000 [ color="#00FF00"; ]
 
 }
