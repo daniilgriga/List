@@ -214,7 +214,7 @@ const char* graph_dump (struct list_t* list)
 {
     assert (list);
 
-    FILE* graph_file = fopen ("../graphviz/dump.dot", "w");
+    FILE* graph_file = fopen ("graphviz/dump.dot", "w");
     if (graph_file == NULL)
     {
         printf(RED_TEXT("ERROR open graph_file\n"));
@@ -263,8 +263,8 @@ const char* graph_dump (struct list_t* list)
     static char filename[50] = {};
     char    command_name[100] = {};
 
-    sprintf (filename, "../graphviz/dump%d.png", dump_number++);
-    sprintf (command_name, "dot ../graphviz/dump.dot -Tpng -o %s", filename);
+    sprintf (filename, "graphviz/dump%d.png", dump_number++);
+    sprintf (command_name, "dot graphviz/dump.dot -Tpng -o %s", filename);
 
     system  (command_name);
 

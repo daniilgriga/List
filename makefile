@@ -20,7 +20,7 @@ FLAGS = -D _DEBUG -ggdb3  -O0 -Wall -Wextra  -Waggressive-loop-optimizations \
 CFLAGS = -c $(FLAGS)
 LDFLAGS = $(FLAGS) -lm
 
-SOURCES_LIST = list.c main.c
+SOURCES_LIST = main.c list.c
 
 SOURCES = $(SOURCES_LIST:%=src/%)
 OBJECTS = $(SOURCES_LIST:%.c=build/%.o)
@@ -38,6 +38,9 @@ $(EXECUTABLE): $(OBJECTS)
 
 build/%.o: src/%.c
 	@$(CC) -I./include $(CFLAGS) -MMD -MP $< -o $@
+
+run:
+	./$(EXECUTABLE)
 
 clean:
 	rm -f build/*.o $(EXECUTABLE)

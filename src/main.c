@@ -11,7 +11,7 @@ FILE* LOG_FILE = NULL;
 
 int main (void)
 {
-    LOG_FILE = open_log_file ("../graphviz/log_dump.html");
+    LOG_FILE = open_log_file ("graphviz/log_dump.html");
 
     struct list_t list = {};
 
